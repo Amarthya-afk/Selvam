@@ -9,6 +9,7 @@ import expenseRoutes from "./routes/expenseRoutes.js";
 import liabilityRoutes from "./routes/liabilityRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import familyRoutes from "./routes/familyRoutes.js";
+import chatbotRoutes from "./routes/chatbotRoutes.js";
 import cors from 'cors';
 
 
@@ -40,6 +41,9 @@ app.use("/api/liabilities", liabilityRoutes);
 
 //Dashboard Routes
 app.use("/api/dashboard", dashboardRoutes);
+
+// Chatbot Routes
+app.use("/api/chat", chatbotRoutes);
 
 // Mongo Connection
 mongoose.connect(process.env.MONGO_URI)

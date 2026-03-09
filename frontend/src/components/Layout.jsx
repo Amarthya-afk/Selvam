@@ -16,6 +16,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import logo from "../assets/logo.jpeg";
+import Chatbot from "./Chatbot.jsx";
 
 export default function Layout({ children }) {
   const { user, logout } = useAuth();
@@ -55,6 +56,7 @@ export default function Layout({ children }) {
       </header>
 
       <main className="app-main">{children}</main>
+      <Chatbot />
     </div>
   );
 }
