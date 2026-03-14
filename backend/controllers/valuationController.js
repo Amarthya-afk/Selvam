@@ -72,7 +72,7 @@ export const syncValuations = async () => {
                         cachedGoldPrice = await fetchGoldPrice();
                     }
                     newValue = cachedGoldPrice * asset.quantity;
-                } else if (asset.assetType.toLowerCase() === "investment" && asset.symbol) {
+                } else if (["investment", "mutual fund", "mf"].includes(asset.assetType.toLowerCase()) && asset.symbol) {
                     const nav = await fetchMFNAV(asset.symbol);
                     newValue = nav * asset.quantity;
                 }

@@ -12,26 +12,36 @@ import axios from "axios";
 export const getGoldPrice = async () => {
   try {
 
-    // Example API (can be replaced later)
-    const response = await axios.get(
-      "https://api.metals.live/v1/spot/gold"
-    );
+    // We noticed GOLD_API_KEY in the .env file! Let's use it with goldapi.io
+    const apiKey = process.env.GOLD_API_KEY;
+
+    if (!apiKey) {
+      console.warn("Gold API key missing, using fallback price.");
+      return 6000;
+    }
+
+    const response = await axios.get("https://www.goldapi.io/api/XAU/INR", {
+      headers: {
+        "x-access-token": apiKey,
+        "Content-Type": "application/json"
+      }
+    });
 
     /*
-      API returns something like:
-      [ { gold: 2320.45 } ]  // price per ounce in USD
+      GoldAPI returns something like:
+      {
+        "price": 234500,  // price per ounce in INR
+        "price_gram_24k": 7539.36 // price per gram in INR
+      }
     */
 
-    const pricePerOunceUSD = response.data[0].gold;
+    const pricePerGramINR = response.data.price_gram_24k;
+    
+    if (!pricePerGramINR) {
+      throw new Error("Invalid response format from GoldAPI");
+    }
 
-    // Convert ounce → gram
-    const pricePerGramUSD = pricePerOunceUSD / 31.1035;
-
-    // Approx USD → INR conversion
-    const USD_TO_INR = 83;
-
-    const pricePerGramINR = pricePerGramUSD * USD_TO_INR;
-
+    console.log(`Successfully fetched live Gold price: ₹${pricePerGramINR}`);
     return Number(pricePerGramINR.toFixed(2));
 
   } catch (error) {
